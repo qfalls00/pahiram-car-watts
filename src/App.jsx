@@ -28,155 +28,155 @@ import { BookingProvider } from "./context/BookingContext"
 
 // Protected route component
 const ProtectedRoute = ({ children, requireAdmin = false }) => {
-  const { isAuthenticated, isAdmin, loading } = useAuth()
+    const { isAuthenticated, isAdmin, loading } = useAuth()
 
-  if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>
-  }
+    if (loading) {
+        return <div className="flex justify-center items-center h-screen">Loading...</div>
+    }
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />
-  }
+    if (!isAuthenticated) {
+        return <Navigate to="/login" />
+    }
 
-  if (requireAdmin && !isAdmin) {
-    return <Navigate to="/" />
-  }
+    if (requireAdmin && !isAdmin) {
+        return <Navigate to="/" />
+    }
 
-  return children
+    return children
 }
 
 function AppRoutes() {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/browse-cars" element={<BrowseCars />} />
+    return (
+        <div className="min-h-screen bg-gray-50">
+            <Navbar />
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/browse-cars" element={<BrowseCars />} />
 
-        {/* Admin Routes */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/cars"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <CarManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/reservations"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminReservations />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/bookings"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminBookings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/reports"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminReports />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/settings"
-          element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminSettings />
-            </ProtectedRoute>
-          }
-        />
+                {/* Admin Routes */}
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/cars"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <CarManagement />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/reservations"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <AdminReservations />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/bookings"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <AdminBookings />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/reports"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <AdminReports />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/settings"
+                    element={
+                        <ProtectedRoute requireAdmin={true}>
+                            <AdminSettings />
+                        </ProtectedRoute>
+                    }
+                />
 
-        {/* User Routes */}
-        <Route
-          path="/user/dashboard"
-          element={
-            <ProtectedRoute>
-              <UserDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reserved-cars"
-          element={
-            <ProtectedRoute>
-              <ReservedCars />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/rented-cars"
-          element={
-            <ProtectedRoute>
-              <RentedCars />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/rental-history"
-          element={
-            <ProtectedRoute>
-              <RentalHistory />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <UserSettings />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </div>
-  )
+                {/* User Routes */}
+                <Route
+                    path="/user/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <UserDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute>
+                            <UserProfile />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/reserved-cars"
+                    element={
+                        <ProtectedRoute>
+                            <ReservedCars />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/rented-cars"
+                    element={
+                        <ProtectedRoute>
+                            <RentedCars />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/rental-history"
+                    element={
+                        <ProtectedRoute>
+                            <RentalHistory />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/settings"
+                    element={
+                        <ProtectedRoute>
+                            <UserSettings />
+                        </ProtectedRoute>
+                    }
+                />
+            </Routes>
+        </div>
+    )
 }
 
 function App() {
-  return (
-    <AuthProvider>
-      <NotificationProvider>
-        <CarProvider>
-          <ReservationProvider>
-            <BookingProvider>
-              <Router>
-                <AppRoutes />
-              </Router>
-            </BookingProvider>
-          </ReservationProvider>
-        </CarProvider>
-      </NotificationProvider>
-    </AuthProvider>
-  )
+    return (
+        <AuthProvider>
+            <NotificationProvider>
+                <CarProvider>
+                    <ReservationProvider>
+                        <BookingProvider>
+                            <Router>
+                                <AppRoutes />
+                            </Router>
+                        </BookingProvider>
+                    </ReservationProvider>
+                </CarProvider>
+            </NotificationProvider>
+        </AuthProvider>
+    )
 }
 
 export default App

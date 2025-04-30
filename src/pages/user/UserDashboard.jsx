@@ -227,13 +227,13 @@ export default function UserDashboard() {
                                             <div className="flex items-start">
                                                 <div
                                                     className={`rounded-full p-2 mr-4 ${activity.type === "reservation"
-                                                            ? activity.action === "cancelled"
-                                                                ? "bg-red-100 text-red-600"
-                                                                : "bg-blue-100 text-blue-600"
-                                                            : activity.type === "rental"
-                                                                ? "bg-green-100 text-green-600"
-                                                                : "bg-purple-100 text-purple-600"
-                                                        }`}
+                                                        ? activity.action === "cancelled"
+                                                            ? "bg-red-100 text-red-600"
+                                                            : "bg-blue-100 text-blue-600"
+                                                        : activity.type === "rental"
+                                                            ? "bg-green-100 text-green-600"
+                                                            : "bg-purple-100 text-purple-600"
+                                                    }`}
                                                 >
                                                     {activity.type === "reservation" ? (
                                                         activity.action === "cancelled" ? (
@@ -260,13 +260,13 @@ export default function UserDashboard() {
                                                         </h3>
                                                         <span
                                                             className={`px-2 py-1 text-xs rounded-full ${activity.status === "Active" || activity.status === "Pending Confirmation"
-                                                                    ? "bg-blue-100 text-blue-800"
-                                                                    : activity.status === "Ongoing"
-                                                                        ? "bg-green-100 text-green-800"
-                                                                        : activity.status === "Cancelled"
-                                                                            ? "bg-red-100 text-red-800"
-                                                                            : "bg-gray-100 text-gray-800"
-                                                                }`}
+                                                                ? "bg-blue-100 text-blue-800"
+                                                                : activity.status === "Ongoing"
+                                                                    ? "bg-green-100 text-green-800"
+                                                                    : activity.status === "Cancelled"
+                                                                        ? "bg-red-100 text-red-800"
+                                                                        : "bg-gray-100 text-gray-800"
+                                                            }`}
                                                         >
                                                             {activity.status}
                                                         </span>
@@ -304,11 +304,11 @@ export default function UserDashboard() {
                                         <div className="flex items-start">
                                             <div
                                                 className={`rounded-full p-2 mr-3 ${notification.type === "reservation"
-                                                        ? "bg-blue-100 text-blue-600"
-                                                        : notification.type === "cancellation"
-                                                            ? "bg-red-100 text-red-600"
-                                                            : "bg-green-100 text-green-600"
-                                                    }`}
+                                                    ? "bg-blue-100 text-blue-600"
+                                                    : notification.type === "cancellation"
+                                                        ? "bg-red-100 text-red-600"
+                                                        : "bg-green-100 text-green-600"
+                                                }`}
                                             >
                                                 {notification.type === "reservation" ? (
                                                     <Calendar className="h-4 w-4" />

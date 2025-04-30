@@ -10,6 +10,7 @@ const initialCars = [
     {
         id: "1",
         name: "2016 Toyota Camry",
+        chassisNumber: "JT2BF22K6W0123456",
         type: "Sedan",
         price: 4500,
         seats: 4,
@@ -29,6 +30,7 @@ const initialCars = [
     {
         id: "2",
         name: "2018 Honda Civic",
+        chassisNumber: "2HGFC2F56JH543210",
         type: "Sedan",
         price: 4200,
         seats: 5,
@@ -47,6 +49,7 @@ const initialCars = [
     {
         id: "3",
         name: "2020 Ford Explorer",
+        chassisNumber: "1FM5K8GC8LGA12345",
         type: "SUV",
         price: 6500,
         seats: 7,
@@ -66,6 +69,7 @@ const initialCars = [
     {
         id: "4",
         name: "2019 Mitsubishi Montero",
+        chassisNumber: "JMYLYV97XKJ123456",
         type: "SUV",
         price: 5800,
         seats: 7,
@@ -84,6 +88,7 @@ const initialCars = [
     {
         id: "5",
         name: "2021 Mazda 3",
+        chassisNumber: "JM1BP0L00M1123456",
         type: "Hatchback",
         price: 4800,
         seats: 5,
@@ -102,6 +107,7 @@ const initialCars = [
     {
         id: "6",
         name: "2017 Toyota Fortuner",
+        chassisNumber: "MHFJW8EM7H0123456",
         type: "SUV",
         price: 5500,
         seats: 7,

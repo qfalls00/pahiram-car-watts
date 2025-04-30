@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Search, Plus } from "lucide-react"
-import AdminSidebar from "./components/AdminSidebar"
+import AdminSidebar from "./components/AdminSidebar.jsx"
 import AddCarModal from "./components/AddCarModal"
 import EditCarModal from "./components/EditCarModal"
 import ImageCarousel from "../../components/ImageCarousel"

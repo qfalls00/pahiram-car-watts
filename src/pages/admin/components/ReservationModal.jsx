@@ -7,13 +7,13 @@ import PaymentModal from "./PaymentModal"
 
 export default function ReservationModal({ reservation, onClose }) {
     const { addBooking } = useBookings()
-    const { getCarById } = useCars()
+    const { getCarById, updateCar } = useCars()
 
     const [formData, setFormData] = useState({
         fullName: "Diwata Pares Overcook",
         contactNumber: "63912-345-6789",
         licenseId: "1234 5678 9123",
-        paymentMethod: "Cash",
+        paymentMethod: "Cash", // Only Cash is available
     })
 
     const [licenseImage, setLicenseImage] = useState(null)
@@ -21,13 +21,14 @@ export default function ReservationModal({ reservation, onClose }) {
     const [showPaymentModal, setShowPaymentModal] = useState(false)
     const [bookingData, setBookingData] = useState(null)
     const [car, setCar] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         if (reservation && reservation.carId) {
             const carData = getCarById(reservation.carId)
             setCar(carData)
         }
-    }, [reservation])
+    }, [reservation, getCarById])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -39,6 +40,7 @@ export default function ReservationModal({ reservation, onClose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setLoading(true)
 
         // Prepare booking data
         const booking = {
@@ -47,14 +49,16 @@ export default function ReservationModal({ reservation, onClose }) {
             customerName: formData.fullName,
             contactNumber: formData.contactNumber,
             licenseId: formData.licenseId,
-            paymentMethod: formData.paymentMethod,
+            paymentMethod: "Cash", // Only Cash is available
             startDate: reservation.startDate,
             endDate: reservation.endDate,
             totalPrice: reservation.totalPrice || car.price * 7,
+            status: "Ongoing", // Default status for new bookings
         }
 
         setBookingData(booking)
         setShowPaymentModal(true)
+        setLoading(false)
     }
 
     const handlePaymentComplete = (paymentDetails) => {
@@ -62,11 +66,20 @@ export default function ReservationModal({ reservation, onClose }) {
         const completeBooking = {
             ...bookingData,
             paymentStatus: "Paid",
-            paymentMethod: paymentDetails.method,
+            paymentMethod: "Cash", // Only Cash is available
+            paymentDate: new Date().toISOString(),
         }
 
         // Add booking to context
         addBooking(completeBooking)
+
+        // Update car availability
+        if (car) {
+            updateCar(car.id, { ...car, available: false })
+        }
+
+        // Navigate to bookings page
+        window.location.href = "/admin/bookings"
 
         onClose()
     }
@@ -115,9 +128,15 @@ export default function ReservationModal({ reservation, onClose }) {
                             </div>
                         </div>
 
-                        <div>
-                            <h3 className="font-medium mb-2">Plate Number</h3>
-                            <p className="text-gray-700">{car.plateNumber || "DIWATA009"}</p>
+                        <div className="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h3 className="font-medium mb-2">Plate Number</h3>
+                                <p className="text-gray-700">{car.plateNumber || "DIWATA009"}</p>
+                            </div>
+                            <div>
+                                <h3 className="font-medium mb-2">Chassis Number</h3>
+                                <p className="text-gray-700">{car.chassisNumber || "N/A"}</p>
+                            </div>
                         </div>
 
                         <div className="mt-4 grid grid-cols-2 gap-4">
@@ -147,6 +166,7 @@ export default function ReservationModal({ reservation, onClose }) {
                                             value={formData.fullName}
                                             onChange={handleChange}
                                             className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                            required
                                         />
                                     </div>
 
@@ -158,6 +178,7 @@ export default function ReservationModal({ reservation, onClose }) {
                                             value={formData.contactNumber}
                                             onChange={handleChange}
                                             className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                            required
                                         />
                                     </div>
                                 </div>
@@ -171,6 +192,7 @@ export default function ReservationModal({ reservation, onClose }) {
                                             value={formData.licenseId}
                                             onChange={handleChange}
                                             className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                            required
                                         />
                                     </div>
 
@@ -211,16 +233,13 @@ export default function ReservationModal({ reservation, onClose }) {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
-                                    <select
-                                        name="paymentMethod"
-                                        value={formData.paymentMethod}
-                                        onChange={handleChange}
-                                        className="w-full rounded-md border border-gray-300 px-3 py-2"
-                                    >
-                                        <option value="Cash">Cash</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Credit Card">Credit Card</option>
-                                    </select>
+                                    <input
+                                        type="text"
+                                        value="Cash"
+                                        disabled
+                                        className="w-full rounded-md border border-gray-300 px-3 py-2 bg-gray-50"
+                                    />
+                                    <p className="text-xs text-gray-500 mt-1">Only cash payments are accepted</p>
                                 </div>
 
                                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -228,8 +247,8 @@ export default function ReservationModal({ reservation, onClose }) {
                                     <div className="flex justify-between mb-2">
                                         <span className="text-gray-600">Amount Due</span>
                                         <span>
-                                            ₱ {car.price} x {Math.round(reservation.totalPrice / car.price)} days
-                                        </span>
+                      ₱ {car.price} x {Math.round(reservation.totalPrice / car.price)} days
+                    </span>
                                     </div>
                                     <div className="flex justify-between font-bold">
                                         <span>Total</span>
@@ -238,11 +257,23 @@ export default function ReservationModal({ reservation, onClose }) {
                                 </div>
 
                                 <div className="flex justify-end space-x-4">
-                                    <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-300 rounded-md">
+                                    <button
+                                        type="button"
+                                        onClick={onClose}
+                                        className="px-4 py-2 border border-gray-300 rounded-md"
+                                        disabled={loading}
+                                    >
                                         Cancel
                                     </button>
-                                    <button type="submit" className="px-4 py-2 bg-black text-white rounded-md">
-                                        Proceed
+                                    <button type="submit" className="px-4 py-2 bg-black text-white rounded-md" disabled={loading}>
+                                        {loading ? (
+                                            <span className="flex items-center">
+                        <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+                        Processing...
+                      </span>
+                                        ) : (
+                                            "Proceed"
+                                        )}
                                     </button>
                                 </div>
                             </div>

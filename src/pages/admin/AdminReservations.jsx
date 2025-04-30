@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Search, AlertCircle, CheckCircle } from "lucide-react"
-import AdminSidebar from "./components/AdminSidebar"
+import AdminSidebar from "./components/AdminSidebar.jsx"
 import ReservationModal from "./components/ReservationModal"
 import PaymentModal from "./components/PaymentModal"
 import { useReservations } from "../../context/ReservationContext"
@@ -24,7 +24,6 @@ export default function AdminReservations() {
     const [actionInProgress, setActionInProgress] = useState(null)
     const [statusMessage, setStatusMessage] = useState({ type: "", message: "" })
 
-    // Process reservations with car details
     useEffect(() => {
         if (reservations.length > 0 && cars.length > 0) {
             const processedReservations = reservations.map((reservation) => {
@@ -44,7 +43,7 @@ export default function AdminReservations() {
         }
     }, [reservations, cars])
 
-    // Filter reservations based on selected filter and search term
+// Filter reservations based on selected filter and search term
     useEffect(() => {
         if (loading) return
 
@@ -64,13 +63,7 @@ export default function AdminReservations() {
         if (filter !== "all") {
             if (filter === "active") result = result.filter((r) => r.status === "Active")
             if (filter === "pending") result = result.filter((r) => r.status === "Pending Confirmation")
-            if (filter === "expired") result = result.filter((r) => r.status === "Expired")
-            if (filter === "converted") result = result.filter((r) => r.status === "Converted to Booking")
             if (filter === "cancelled") result = result.filter((r) => r.status === "Cancelled")
-            if (filter === "action-required") {
-                // Reservations that need action (pending confirmation)
-                result = result.filter((r) => r.status === "Pending Confirmation")
-            }
         }
 
         // Apply search
@@ -330,9 +323,9 @@ export default function AdminReservations() {
                 {statusMessage.message && (
                     <div
                         className={`mb-6 p-4 ${statusMessage.type === "success"
-                                ? "bg-green-50 border border-green-200 text-green-700"
-                                : "bg-red-50 border border-red-200 text-red-700"
-                            } rounded-md flex items-center`}
+                            ? "bg-green-50 border border-green-200 text-green-700"
+                            : "bg-red-50 border border-red-200 text-red-700"
+                        } rounded-md flex items-center`}
                     >
                         {statusMessage.type === "success" ? (
                             <CheckCircle className="h-5 w-5 mr-2" />
@@ -379,32 +372,13 @@ export default function AdminReservations() {
                             Pending
                         </button>
                         <button
-                            onClick={() => setFilter("expired")}
-                            className={`px-4 py-2 rounded-md ${filter === "expired" ? "bg-black text-white" : "bg-white text-gray-700 border"}`}
-                        >
-                            Expired
-                        </button>
-                        <button
-                            onClick={() => setFilter("converted")}
-                            className={`px-4 py-2 rounded-md ${filter === "converted" ? "bg-black text-white" : "bg-white text-gray-700 border"}`}
-                        >
-                            Converted
-                        </button>
-                        <button
                             onClick={() => setFilter("cancelled")}
                             className={`px-4 py-2 rounded-md ${filter === "cancelled" ? "bg-black text-white" : "bg-white text-gray-700 border"}`}
                         >
                             Cancelled
                         </button>
-                        <button
-                            onClick={() => setFilter("action-required")}
-                            className={`px-4 py-2 rounded-md ${filter === "action-required" ? "bg-black text-white" : "bg-white text-gray-700 border"}`}
-                        >
-                            Action Required
-                        </button>
                     </div>
                 </div>
-
                 {/* Reservations Table */}
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {filteredReservations.length === 0 ? (
@@ -415,54 +389,54 @@ export default function AdminReservations() {
                     ) : (
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Reservation ID
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Customer
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Car
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Reservation Date
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Expiration Date
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Action
-                                    </th>
-                                </tr>
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Reservation ID
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Customer
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Car
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Reservation Date
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Expiration Date
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Status
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Action
+                                </th>
+                            </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {filteredReservations.map((reservation) => (
-                                    <tr key={reservation.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{reservation.id}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.customer}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.car}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {new Date(reservation.startDate).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {new Date(reservation.endDate).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                            {filteredReservations.map((reservation) => (
+                                <tr key={reservation.id}>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{reservation.id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.customer}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{reservation.car}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {new Date(reservation.startDate).toLocaleDateString()}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {new Date(reservation.endDate).toLocaleDateString()}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
                                             <span
                                                 className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(reservation.status)}`}
                                             >
                                                 {reservation.status}
                                             </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {renderActionButton(reservation)}
-                                        </td>
-                                    </tr>
-                                ))}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        {renderActionButton(reservation)}
+                                    </td>
+                                </tr>
+                            ))}
                             </tbody>
                         </table>
                     )}
