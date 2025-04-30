@@ -25,6 +25,8 @@ const initialCars = [
         available: true,
         plateNumber: "DIWATA001",
         year: 2016,
+        mileage: 45000,
+        archived: false,
         description: "A reliable and comfortable sedan perfect for city driving and longer trips.",
     },
     {
@@ -44,6 +46,8 @@ const initialCars = [
         available: true,
         plateNumber: "DIWATA002",
         year: 2018,
+        mileage: 32000,
+        archived: false,
         description: "A sporty and fuel-efficient sedan with modern features and excellent handling.",
     },
     {
@@ -64,6 +68,8 @@ const initialCars = [
         available: true,
         plateNumber: "DIWATA003",
         year: 2020,
+        mileage: 18000,
+        archived: false,
         description: "A spacious SUV perfect for family trips and adventures with plenty of cargo space.",
     },
     {
@@ -83,6 +89,8 @@ const initialCars = [
         available: true,
         plateNumber: "DIWATA004",
         year: 2019,
+        mileage: 25000,
+        archived: false,
         description: "A rugged and reliable SUV with excellent off-road capabilities and comfortable interior.",
     },
     {
@@ -102,6 +110,8 @@ const initialCars = [
         available: true,
         plateNumber: "DIWATA005",
         year: 2021,
+        mileage: 12000,
+        archived: false,
         description: "A stylish hatchback with sporty handling and modern features for an enjoyable driving experience.",
     },
     {
@@ -121,6 +131,8 @@ const initialCars = [
         available: true,
         plateNumber: "DIWATA006",
         year: 2017,
+        mileage: 38000,
+        archived: false,
         description: "A versatile SUV with excellent durability and performance on various terrains.",
     },
 ]
@@ -142,7 +154,6 @@ export const CarProvider = ({ children }) => {
         const newCar = {
             ...car,
             id: `${cars.length + 1}`,
-            available: true,
         }
         setCars((prev) => [...prev, newCar])
         return newCar
@@ -152,11 +163,6 @@ export const CarProvider = ({ children }) => {
     const updateCar = (updatedCar) => {
         setCars((prev) => prev.map((car) => (car.id === updatedCar.id ? updatedCar : car)))
         return updatedCar
-    }
-
-    // Delete a car
-    const deleteCar = (carId) => {
-        setCars((prev) => prev.filter((car) => car.id !== carId))
     }
 
     // Get a car by ID
@@ -176,7 +182,6 @@ export const CarProvider = ({ children }) => {
                 loading,
                 addCar,
                 updateCar,
-                deleteCar,
                 getCarById,
                 updateCarAvailability,
             }}

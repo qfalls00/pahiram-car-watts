@@ -9,7 +9,7 @@ import ImageCarousel from "../../components/ImageCarousel"
 import { useCars } from "../../context/CarContext"
 
 export default function CarManagement() {
-    const { cars, addCar, updateCar, deleteCar, loading } = useCars()
+    const { cars, addCar, updateCar, loading } = useCars()
 
     const [searchTerm, setSearchTerm] = useState("")
     const [filters, setFilters] = useState({
@@ -90,10 +90,9 @@ export default function CarManagement() {
         setSelectedCar(null)
     }
 
-    const handleDeleteCar = (carId) => {
-        if (window.confirm("Are you sure you want to delete this car?")) {
-            deleteCar(carId)
-        }
+    const handleArchiveCar = (car) => {
+        const updatedCar = { ...car, archived: !car.archived }
+        updateCar(updatedCar)
     }
 
     if (loading) {
@@ -185,16 +184,20 @@ export default function CarManagement() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {filteredCars.map((car) => (
-                            <div key={car.id} className="bg-white rounded-lg overflow-hidden shadow-sm">
+                            <div
+                                key={car.id}
+                                className={`bg-white rounded-lg overflow-hidden shadow-sm ${car.archived ? "opacity-60" : ""}`}
+                            >
                                 <div className="relative h-48">
                                     <ImageCarousel
                                         images={car.images && car.images.length > 0 ? car.images : [car.imageUrl]}
                                         className="h-full"
                                     />
                                     <span
-                                        className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm ${car.available ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}
+                                        className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm ${car.archived ? "bg-gray-600 text-white" : "bg-green-600 text-white"
+                                            }`}
                                     >
-                                        {car.available ? "Available" : "Unavailable"}
+                                        {car.archived ? "Archived" : "Active"}
                                     </span>
                                 </div>
                                 <div className="p-4">
@@ -217,18 +220,37 @@ export default function CarManagement() {
                                             <span>{car.fuelType}</span>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="text-sm mb-4">
+                                        <span className="font-medium">Mileage:</span> {car.mileage || 0} km
+                                    </div>
+                                    <div className="flex flex-col gap-3">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-sm font-medium">Archive Status</span>
+                                            <div className="flex items-center">
+                                                <div className="relative inline-block w-10 mr-2 align-middle select-none">
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`archive-toggle-${car.id}`}
+                                                        checked={car.archived}
+                                                        onChange={() => handleArchiveCar(car)}
+                                                        className="sr-only"
+                                                    />
+                                                    <div className="block bg-gray-300 w-10 h-6 rounded-full"></div>
+                                                    <div
+                                                        className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${car.archived ? "transform translate-x-4" : ""
+                                                            }`}
+                                                    ></div>
+                                                </div>
+                                                <label htmlFor={`archive-toggle-${car.id}`} className="text-sm text-gray-700">
+                                                    {car.archived ? "Archived" : "Active"}
+                                                </label>
+                                            </div>
+                                        </div>
                                         <button
                                             className="px-4 py-2 border border-black rounded-lg text-sm hover:bg-gray-50"
                                             onClick={() => handleEditCar(car)}
                                         >
                                             Edit
-                                        </button>
-                                        <button
-                                            className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm hover:bg-red-700"
-                                            onClick={() => handleDeleteCar(car.id)}
-                                        >
-                                            Delete
                                         </button>
                                     </div>
                                 </div>

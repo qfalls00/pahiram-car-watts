@@ -12,7 +12,7 @@ export default function AdminSidebar({ active }) {
                 <Link
                     to="/admin"
                     className={`flex items-center px-6 py-4 ${active === "dashboard" ? "bg-gray-100 border-l-4 border-black" : ""
-                    }`}
+                        }`}
                 >
                     <LayoutDashboard className="h-5 w-5 mr-3 text-gray-500" />
                     <span>Dashboard</span>
@@ -27,7 +27,7 @@ export default function AdminSidebar({ active }) {
                 <Link
                     to="/admin/reservations"
                     className={`flex items-center px-6 py-4 ${active === "reservations" ? "bg-gray-100 border-l-4 border-black" : ""
-                    }`}
+                        }`}
                 >
                     <Calendar className="h-5 w-5 mr-3 text-gray-500" />
                     <span>Reservations</span>
@@ -38,7 +38,7 @@ export default function AdminSidebar({ active }) {
                 <Link
                     to="/admin/bookings"
                     className={`flex items-center px-6 py-4 ${active === "bookings" ? "bg-gray-100 border-l-4 border-black" : ""
-                    }`}
+                        }`}
                 >
                     <BookOpen className="h-5 w-5 mr-3 text-gray-500" />
                     <span>Bookings</span>
@@ -53,7 +53,7 @@ export default function AdminSidebar({ active }) {
                 <Link
                     to="/admin/settings"
                     className={`flex items-center px-6 py-4 ${active === "settings" ? "bg-gray-100 border-l-4 border-black" : ""
-                    }`}
+                        }`}
                 >
                     <Settings className="h-5 w-5 mr-3 text-gray-500" />
                     <span>Settings</span>

@@ -9,7 +9,6 @@ import { useBookings } from "../../context/BookingContext"
 import { useCars } from "../../context/CarContext"
 import { useNotifications } from "../../context/NotificationContext"
 
-
 export default function AdminBookings() {
     const { bookings, updateBooking, completeBooking, cancelBooking } = useBookings()
     const { cars, getCarById, updateCar } = useCars()
@@ -191,11 +190,10 @@ export default function AdminBookings() {
             // 5. Show success message
             setStatusMessage({
                 type: "success",
-                message: `Car returned successfully${
-                    returnData.damageAssessment.hasDamage
+                message: `Car returned successfully${returnData.damageAssessment.hasDamage
                         ? ` with ${returnData.damageAssessment.damageType} damage assessment`
                         : " with no damage"
-                }`,
+                    }`,
             })
 
             // Clear message after 3 seconds
@@ -281,11 +279,10 @@ export default function AdminBookings() {
                 {/* Status Message */}
                 {statusMessage.message && (
                     <div
-                        className={`mb-6 p-4 ${
-                            statusMessage.type === "success"
+                        className={`mb-6 p-4 ${statusMessage.type === "success"
                                 ? "bg-green-50 border border-green-200 text-green-700"
                                 : "bg-red-50 border border-red-200 text-red-700"
-                        } rounded-md flex items-center`}
+                            } rounded-md flex items-center`}
                     >
                         {statusMessage.type === "success" ? (
                             <Check className="h-5 w-5 mr-2" />
@@ -350,110 +347,109 @@ export default function AdminBookings() {
                     ) : (
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Booking ID
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Customer
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Car
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Start Date
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    End Date
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Total
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Payment
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Actions
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Booking ID
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Customer
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Car
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Start Date
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        End Date
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Total
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Payment
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                            {filteredBookings.map((booking) => (
-                                <tr key={booking.id}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{booking.id}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{booking.customer}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{booking.car}</td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {new Date(booking.startDate).toLocaleDateString()}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {new Date(booking.endDate).toLocaleDateString()}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        ₱ {booking.totalPrice.toLocaleString()}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span
-                          className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(booking.status)}`}
-                      >
-                        {booking.status}
-                      </span>
-                                        {booking.actionRequired && (
-                                            <span className="ml-2 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                          !
-                        </span>
-                                        )}
-                                        {booking.damageAssessment?.hasDamage && (
-                                            <span className="ml-2 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
-                          Damaged
-                        </span>
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex flex-col gap-1">
-                        <span
-                            className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getPaymentStatusBadgeClass(booking.paymentStatus)}`}
-                        >
-                          {booking.paymentStatus}
-                        </span>
+                                {filteredBookings.map((booking) => (
+                                    <tr key={booking.id}>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{booking.id}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{booking.customer}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{booking.car}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {new Date(booking.startDate).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            {new Date(booking.endDate).toLocaleDateString()}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            ₱ {booking.totalPrice.toLocaleString()}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusBadgeClass(booking.status)}`}
+                                            >
+                                                {booking.status}
+                                            </span>
+                                            {booking.actionRequired && (
+                                                <span className="ml-2 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                    !
+                                                </span>
+                                            )}
                                             {booking.damageAssessment?.hasDamage && (
+                                                <span className="ml-2 px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">
+                                                    Damaged
+                                                </span>
+                                            )}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex flex-col gap-1">
                                                 <span
-                                                    className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                        booking.damageAssessment.isPaid
-                                                            ? "bg-green-100 text-green-800"
-                                                            : "bg-red-100 text-red-800"
-                                                    }`}
+                                                    className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getPaymentStatusBadgeClass(booking.paymentStatus)}`}
                                                 >
-                            Damage Fee: {booking.damageAssessment.isPaid ? "Paid" : "Unpaid"}
-                          </span>
-                                            )}
-                                        </div>
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <div className="flex gap-2">
-                                            <button onClick={() => handleViewBooking(booking)} className="text-black hover:underline">
-                                                View
-                                            </button>
-                                            {booking.status === "Ongoing" && (
-                                                <button onClick={() => handleReturnCar(booking)} className="text-green-600 hover:underline">
-                                                    Return Car
+                                                    {booking.paymentStatus}
+                                                </span>
+                                                {booking.damageAssessment?.hasDamage && (
+                                                    <span
+                                                        className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${booking.damageAssessment.isPaid
+                                                                ? "bg-green-100 text-green-800"
+                                                                : "bg-red-100 text-red-800"
+                                                            }`}
+                                                    >
+                                                        Damage Fee: {booking.damageAssessment.isPaid ? "Paid" : "Unpaid"}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <div className="flex gap-2">
+                                                <button onClick={() => handleViewBooking(booking)} className="text-black hover:underline">
+                                                    View
                                                 </button>
-                                            )}
-                                            {(booking.status === "Ongoing" || booking.status === "Confirmed") && (
-                                                <button
-                                                    onClick={() => handleCancelBooking(booking.id)}
-                                                    className="text-red-600 hover:underline"
-                                                >
-                                                    Cancel
-                                                </button>
-                                            )}
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                                                {booking.status === "Ongoing" && (
+                                                    <button onClick={() => handleReturnCar(booking)} className="text-green-600 hover:underline">
+                                                        Return Car
+                                                    </button>
+                                                )}
+                                                {(booking.status === "Ongoing" || booking.status === "Confirmed") && (
+                                                    <button
+                                                        onClick={() => handleCancelBooking(booking.id)}
+                                                        className="text-red-600 hover:underline"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
                     )}

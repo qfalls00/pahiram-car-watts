@@ -15,7 +15,8 @@ export default function AddCarModal({ onClose, onAddCar }) {
         plateNumber: "",
         year: new Date().getFullYear(),
         description: "",
-        available: true,
+        mileage: 0,
+        archived: false,
     })
 
     const [carImages, setCarImages] = useState([])
@@ -58,9 +59,11 @@ export default function AddCarModal({ onClose, onAddCar }) {
         const newCar = {
             ...formData,
             id: `CAR${Math.floor(Math.random() * 1000)}`,
+            name: formData.carName,
+            type: formData.carType,
             images: previewImages, // Store all image URLs
             imageUrl: previewImages[0] || null, // Keep the first image as the main one for backward compatibility
-            available: formData.available,
+            archived: formData.archived,
         }
 
         // Call parent handler if provided
@@ -266,26 +269,39 @@ export default function AddCarModal({ onClose, onAddCar }) {
                                     </div>
                                 </div>
 
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Mileage (km)</label>
+                                    <input
+                                        type="number"
+                                        name="mileage"
+                                        value={formData.mileage}
+                                        onChange={handleChange}
+                                        min="0"
+                                        className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                        placeholder="0"
+                                    />
+                                </div>
+
                                 <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Availability Status</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Archive Status</label>
                                     <div className="flex items-center">
                                         <div className="relative inline-block w-10 mr-2 align-middle select-none">
                                             <input
                                                 type="checkbox"
-                                                name="available"
-                                                id="available"
-                                                checked={formData.available}
-                                                onChange={(e) => setFormData({ ...formData, available: e.target.checked })}
+                                                name="archived"
+                                                id="archived"
+                                                checked={formData.archived}
+                                                onChange={(e) => setFormData({ ...formData, archived: e.target.checked })}
                                                 className="sr-only"
                                             />
                                             <div className="block bg-gray-300 w-10 h-6 rounded-full"></div>
                                             <div
-                                                className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.available ? "transform translate-x-4" : ""
-                                                }`}
+                                                className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.archived ? "transform translate-x-4" : ""
+                                                    }`}
                                             ></div>
                                         </div>
-                                        <label htmlFor="available" className="text-sm text-gray-700">
-                                            {formData.available ? "Available" : "Unavailable"}
+                                        <label htmlFor="archived" className="text-sm text-gray-700">
+                                            {formData.archived ? "Archived" : "Active"}
                                         </label>
                                     </div>
                                 </div>

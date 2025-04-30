@@ -3,11 +3,10 @@
 import { useState, useEffect } from "react"
 import { X, Plus, ImageIcon } from "lucide-react"
 
-
 export default function EditCarModal({ car, onClose, onSave }) {
     const [formData, setFormData] = useState({
         carName: "",
-        chassisNumber: "", // Moved up in the state
+        chassisNumber: "",
         carType: "",
         fuelType: "",
         transmission: "",
@@ -16,7 +15,8 @@ export default function EditCarModal({ car, onClose, onSave }) {
         plateNumber: "",
         year: new Date().getFullYear(),
         description: "",
-        available: true,
+        mileage: 0,
+        archived: false,
     })
 
     const [carImages, setCarImages] = useState([])
@@ -26,7 +26,7 @@ export default function EditCarModal({ car, onClose, onSave }) {
         if (car) {
             setFormData({
                 carName: car.name || "",
-                chassisNumber: car.chassisNumber || "", // Initialize chassis number
+                chassisNumber: car.chassisNumber || "",
                 carType: car.type || "",
                 fuelType: car.fuelType || "",
                 transmission: car.transmission || "",
@@ -34,10 +34,9 @@ export default function EditCarModal({ car, onClose, onSave }) {
                 price: car.price || 0,
                 plateNumber: car.plateNumber || "",
                 year: car.year || new Date().getFullYear(),
-                description:
-                    car.description ||
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                available: car.available !== undefined ? car.available : true,
+                description: car.description || "",
+                mileage: car.mileage || 0,
+                archived: car.archived !== undefined ? car.archived : false,
             })
 
             // Initialize images from car data
@@ -89,7 +88,7 @@ export default function EditCarModal({ car, onClose, onSave }) {
         const updatedCar = {
             ...car,
             name: formData.carName,
-            chassisNumber: formData.chassisNumber, // Add this line
+            chassisNumber: formData.chassisNumber,
             type: formData.carType,
             fuelType: formData.fuelType,
             transmission: formData.transmission,
@@ -98,9 +97,10 @@ export default function EditCarModal({ car, onClose, onSave }) {
             plateNumber: formData.plateNumber,
             year: formData.year,
             description: formData.description,
+            mileage: formData.mileage,
             images: previewImages,
             imageUrl: previewImages[0] || car.imageUrl, // Keep the first image as the main one
-            available: formData.available,
+            archived: formData.archived,
         }
 
         // Call parent handler if provided
@@ -299,32 +299,43 @@ export default function EditCarModal({ car, onClose, onSave }) {
                                     </div>
                                 </div>
 
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Mileage (km)</label>
+                                    <input
+                                        type="number"
+                                        name="mileage"
+                                        value={formData.mileage}
+                                        onChange={handleChange}
+                                        min="0"
+                                        className="w-full rounded-md border border-gray-300 px-3 py-2"
+                                    />
+                                </div>
+
                                 <div className="mb-4">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Availability Status</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Archive Status</label>
                                     <div className="flex items-center">
                                         <div className="relative inline-block w-10 mr-2 align-middle select-none">
                                             <input
                                                 type="checkbox"
-                                                name="available"
-                                                id="available"
-                                                checked={formData.available}
+                                                name="archived"
+                                                id="archived"
+                                                checked={formData.archived}
                                                 onChange={(e) =>
                                                     setFormData({
                                                         ...formData,
-                                                        available: e.target.checked,
+                                                        archived: e.target.checked,
                                                     })
                                                 }
                                                 className="sr-only"
                                             />
                                             <div className="block bg-gray-300 w-10 h-6 rounded-full"></div>
                                             <div
-                                                className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${
-                                                    formData.available ? "transform translate-x-4" : ""
-                                                }`}
+                                                className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform ${formData.archived ? "transform translate-x-4" : ""
+                                                    }`}
                                             ></div>
                                         </div>
-                                        <label htmlFor="available" className="text-sm text-gray-700">
-                                            {formData.available ? "Available" : "Unavailable"}
+                                        <label htmlFor="archived" className="text-sm text-gray-700">
+                                            {formData.archived ? "Archived" : "Active"}
                                         </label>
                                     </div>
                                 </div>
